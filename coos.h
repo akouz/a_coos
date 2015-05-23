@@ -47,7 +47,7 @@ class Coos{
     jmp_buf     main_context;                         // context of scheduler
     jmp_buf     task_context[COOS_MAX_TASKS];         // list of task contexts
     uchar       task_no;                              // current task No
-    int         task_delay[COOS_MAX_TASKS];           // task delay in ticks, task stopped if value is negative
+    volatile int  task_delay[COOS_MAX_TASKS];         // task delay in ticks, task stopped if value is negative
   private:
     void        (*tsk_p[COOS_MAX_TASKS])(void);       // list of registered tasks
 };
