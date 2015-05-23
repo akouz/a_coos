@@ -18,31 +18,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int led = 13;
 
 // -------------------------------------------------------
-// Task 0 blinks led, 0.5 sec ON - 1.5 sec OFF
+// Task 0 sets led OFF every 0.5 sec
 // -------------------------------------------------------
 void coos_task0(void)
 {
   while(1)
   {
-    digitalWrite(led, HIGH); 
-    COOS_DELAY(500);          // 500 ms = 0.5 sec
     digitalWrite(led, LOW); 
-    COOS_DELAY(1500);
+    COOS_DELAY(500);          // 500 ms = 0.5 sec
   }
 }
 // -------------------------------------------------------
-// Task 1 sets led ON every 1.733 sec
+// Task 1 sets led ON every 0.650 sec
 // -------------------------------------------------------
 void coos_task1(void)
 {
-  COOS_DELAY(500);    
+  COOS_DELAY(100);    
   while(1)
   {
     digitalWrite(led, HIGH); 
-    COOS_DELAY(1733);    
+    COOS_DELAY(650);    
   }
-}
-// -------------------------------------------------------
+}// -------------------------------------------------------
 // Setup
 // -------------------------------------------------------
 void setup()
