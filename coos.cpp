@@ -61,6 +61,7 @@ void Coos::register_task(void (*tsk)(void))
 void Coos::run_scheduler(void)
 {
   int   res;
+  char  rdy;
   void (*tsk)(void);
   // --------------------------
   // Init tasks               
@@ -76,7 +77,11 @@ void Coos::run_scheduler(void)
         tsk();                             // invoke task
       }
       else
+      {
+        cli();
         task_delay[task_no] = --res;      // task returns required delay
+        sei();
+      }
     }  
   }
   // --------------------------
@@ -85,17 +90,29 @@ void Coos::run_scheduler(void)
   task_no = 0;
   while(1)
   {
+    cli();                                  // ensure atomic check
     if (task_delay[task_no] == 0)           // if task is active
+      rdy = 1;                              // set "ready" flag
+    else
+      rdy = 0;
+    sei();
+    if (rdy)
     {
       res = setjmp(main_context);           // set return point and get delay value from the task 
       if (res == 0)                         // after setting return point
+      {
         longjmp(task_context[task_no], 1);  // invoke task 
+      }
       else                                  // after returning from task 
+      {
+        cli();                              // must be atomic
         task_delay[task_no] = --res;        // set task delay (negative delay - task stopped) 
+        sei();
+      }
     }
-    if (++task_no >= COOS_MAX_TASKS)
+    if (++task_no >= COOS_MAX_TASKS)        // next task
     {
-      task_no = 0;
+      task_no = 0;                          // round-robin
     }
   }
 }
