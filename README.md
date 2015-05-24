@@ -1,2 +1,5 @@
 # a_coos
-Cooperative operating system for Arduino
+Very simple Cooperative operating system for Arduino.
+
+Kernel uses about 1K bytes. Highly portable, no assembler code. 
+
