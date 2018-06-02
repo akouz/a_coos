@@ -1,7 +1,7 @@
 /*
 * Library   COOS - COoperative Operating System
 * Author    A.Kouznetsov
-* Rev       1.0 dated 23/5/2015
+* Rev       1.1 dated 02/06/2018
 * Target    Arduino
 
 Redistribution and use in source and binary forms, with or without modification, are permitted.
@@ -14,40 +14,41 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+//##########################################################
+// Inc
+//##########################################################
+
 #include  "coos.h"
 
 //##########################################################
-// var  
+// Var  
 //##########################################################
-uint task_cnt;    // counts registered coos tasks
 
 Coos coos;
 
 //##########################################################
-// func
+// Func
 //##########################################################
-// -------------------------------------------------------
+
+// =================================
 // Constructor
-// -------------------------------------------------------
+// =================================
 Coos::Coos(void)
 {
   uint i;
+  uptime = 0;
+  msec = 0;
+  ms = 0;
   task_cnt = 0;
   for (i=0; i<COOS_MAX_TASKS; i++)
   {
-    tsk_p[i] = 0;                      // task is not registered
+    tsk_p[i] = NULL;                   // task is not registered
     task_delay[i] = COOS_STOP;         // all unregistered tasks stopped
   }
-  //set timer0 compare interrupt (cannot use overflow interrupt because it is already used by Arduino)
-  TCCR0A = 0;  
-  TCCR0B = 0;  
-  TCNT0  = 0;  
-  OCR0A = 0x80;                // does not matter, somwhere in the middle
-  TIMSK0 |= (1 << OCIE0A);     // enable timer compare interrupt
 }
-// -------------------------------------------------------
+// =================================
 // Register a task 
-// -------------------------------------------------------
+// =================================
 void Coos::register_task(void (*tsk)(void))
 {
   if (task_cnt < COOS_MAX_TASKS)
@@ -55,20 +56,44 @@ void Coos::register_task(void (*tsk)(void))
     tsk_p[task_cnt++] = tsk;
   }
 }
-// -------------------------------------------------------
-// Scheduler invokes user tasks 
-// -------------------------------------------------------
+// =================================
+// Update time
+// =================================
+// supposed to happen more often than every millisecond,
+// but can be late if a task takes long time to execute
+void Coos::update_time(void)
+{
+  while (ms != (uchar)millis()) // catch up time if late
+  {      
+    ms++;  
+    for (int i=0; i<task_cnt; i++)
+    {
+      if (task_delay[i] > 0)  // positive delays 
+      {
+        task_delay[i]--;
+      }
+    }
+    if (++msec >= 1000) // if 1 sec passed
+    {
+      uptime++;         // count seconds since start
+      msec = 0;
+    }
+  }  
+}
+// =================================
+// Scheduler
+// =================================
 void Coos::run_scheduler(void)
 {
   int   res;
-  char  rdy;
   void (*tsk)(void);
+  update_time(); 
   // --------------------------
   // Init tasks               
   // --------------------------
-  for (task_no=0; task_no<COOS_MAX_TASKS; task_no++)
+  for (task_no=0; task_no<task_cnt; task_no++)
   {
-    if (tsk_p[task_no] != 0)                // if task was registered
+    if (tsk_p[task_no] != NULL)            // if task was registered
     {
       res = setjmp(main_context);
       if (res == 0)
@@ -78,25 +103,18 @@ void Coos::run_scheduler(void)
       }
       else
       {
-        cli();
-        task_delay[task_no] = --res;      // task returns required delay
-        sei();
+        task_delay[task_no] = --res;      // task returns the required delay
       }
     }  
+    update_time(); 
   }
   // --------------------------
   // Scheduler loop          
   // --------------------------
   task_no = 0;
-  while(1)
+  while(1) 
   {
-    cli();                                  // ensure atomic check
-    if (task_delay[task_no] == 0)           // if task is active
-      rdy = 1;                              // set "ready" flag
-    else
-      rdy = 0;
-    sei();
-    if (rdy)
+    if (task_delay[task_no] == 0)
     {
       res = setjmp(main_context);           // set return point and get delay value from the task 
       if (res == 0)                         // after setting return point
@@ -105,30 +123,16 @@ void Coos::run_scheduler(void)
       }
       else                                  // after returning from task 
       {
-        cli();                              // must be atomic
         task_delay[task_no] = --res;        // set task delay (negative delay - task stopped) 
-        sei();
       }
+      update_time(); 
     }
-    if (++task_no >= COOS_MAX_TASKS)        // next task
+    task_cnt = (task_cnt > COOS_MAX_TASKS)? COOS_MAX_TASKS : task_cnt;
+    if (++task_no > task_cnt)               // next task
     {
       task_no = 0;                          // round-robin
     }
+    update_time(); 
   }
 }
-// -------------------------------------------------------
-// Timer0 compare ISR, 1 ms
-// -------------------------------------------------------
-ISR(TIMER0_COMPA_vect)
-{
-  uint i;
-  for (i=0; i<COOS_MAX_TASKS; i++)
-  {
-    if (coos.task_delay[i] > 0)
-    {
-      coos.task_delay[i]--;
-    }
-  }
-}
-
 /* EOF */
