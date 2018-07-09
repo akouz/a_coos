@@ -63,7 +63,8 @@ void Coos::register_task(void (*tsk)(void))
 // but can be late if a task takes long time to execute
 void Coos::update_time(void)
 {
-  while (ms != (uchar)millis()) // catch up time if late
+  uint millisec = (uint)millis(); 
+  while (ms != millisec) // catch up time
   {      
     ms++;  
     for (int i=0; i<task_cnt; i++)

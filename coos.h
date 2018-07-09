@@ -63,7 +63,7 @@ class Coos{
   private:
     void        (*tsk_p[COOS_MAX_TASKS])(void);       // list of registered tasks
     void        update_time(void);
-    uchar       ms;
+    uint        ms;
     uchar       task_cnt;                             // counts registered coos tasks
 };
 extern Coos coos;
