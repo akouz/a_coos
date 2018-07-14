@@ -1,8 +1,8 @@
 /*
- * Sketch    a_coos.ino - simple demo for COOS
+ * Sketch    a_coos.ino - simple demo for cooperative OS named COOS
  * Author    A.Kouznetsov
- * Rev       1.1 dated 03/06/2018
- * Target    tested with Arduino Pro Mini
+ * Rev       1.2 dated 14/07/2018
+ * Target    tested with Arduino Pro Mini, RAK Creator and NodeMCU
 
 Redistribution and use in source and binary forms, with or without modification, are permitted.
 
@@ -17,13 +17,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "coos.h"
 
 //##############################################################################
-// var
+// Var
 //##############################################################################
 
-int led = 13;
+static int led = BUILTIN_LED;
 
 //##############################################################################
-// func
+// Func
 //##############################################################################
 
 // ========================================
@@ -68,15 +68,16 @@ void setup()
   Serial.begin(115200);
   Serial.println("== COOS demo ==");
   pinMode(led, OUTPUT);
-  coos.register_task(coos_task0);  
+  coos.register_task(coos_task0);    
   coos.register_task(coos_task1);
+  coos.start();                     // init registered tasks
 }
 
 // ========================================
 // Main loop 
 // ========================================
 void loop()
-{
-  coos.run_scheduler();  // Coos scheduler is an endless loop itself
+{  
+  coos.run();  // Coos scheduler 
 }
 /* EOF */

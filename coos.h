@@ -1,8 +1,8 @@
 /*
-* Library   COOS - COoperative Operating System
-* Author    A.Kouznetsov
-* Rev       1.1 dated 02/06/2018
-* Target    Arduino
+ * Library   COOS - COoperative Operating System
+ * Author    A.Kouznetsov
+ * Rev       1.2 dated 14/07/2018
+ * Target    Arduino
 
 Redistribution and use in source and binary forms, with or without modification, are permitted.
 
@@ -53,7 +53,8 @@ class Coos{
   public:
                 Coos(void);                           // constructor
     void        register_task(void (*tsk)(void));     // user tasks must be registered first
-    void        run_scheduler(void);                  // COOS task switcher
+    void        start(void);                          // init scheduler once
+    void        run(void);                            // COOS task switcher
     jmp_buf     main_context;                         // context of scheduler
     jmp_buf     task_context[COOS_MAX_TASKS];         // list of task contexts
     uchar       task_no;                              // current task No
