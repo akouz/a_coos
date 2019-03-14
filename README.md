@@ -23,7 +23,7 @@ Alternatively, it can be used as an Arduino library. To install it as library, l
 
 C:\Program Files (x86)\Arduino\libraries
 
-Add folder coos 
+Add folder coos: 
 
 C:\Program Files (x86)\Arduino\libraries\coos
 
