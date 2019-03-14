@@ -15,7 +15,7 @@ Place coos.h and coos.cpp files in the same folder where is your sketch. Edit co
 
 This revision made as C++ template. Library consists of a single file coos.h. 
 
-It can be used same way as rev 1.2. Place coos.h file into the same foldere where the sketch is. In the sketch declare it as:
+It can be used same way as rev 1.2. Place coos.h file into the same foldere where the sketch is. In the sketch include it as:
 
 #include "coos.h"
 
@@ -29,7 +29,7 @@ C:\Program Files (x86)\Arduino\libraries\coos
 
 Copy files coos.h and library.properties there.
 
-In the sketch declare coos as:
+In the sketch include coos library as:
 
 #include <coos.h>
 
