@@ -11,7 +11,7 @@ Revision 1.3 made as C++ template. Library consists of a single file coos.h.
 
 ## Usage
 
-Place coos.h file into the same folder where the sketch is. In the sketch include it as:
+Place coos.h file into the same folder where the sketch is. In the sketch include coos.h as:
 
 #include "coos.h"
 
