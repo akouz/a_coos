@@ -15,7 +15,7 @@ Place coos.h file into the same foldere where the sketch is. In the sketch inclu
 
 #include "coos.h"
 
-Alternatively, it can be used as an Arduino library. To install it as library, locate your Arduino installation folder and find libraries folder. Typically it is: 
+Alternatively, it can be used as an Arduino library. Once installed, there is no need to copy coos.h file into every project any more. To install it as library, locate your Arduino installation folder and find libraries folder. Typically it is: 
 
 C:\Program Files (x86)\Arduino\libraries
 
