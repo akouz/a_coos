@@ -12,25 +12,25 @@ Revision 1.3 made as C++ template. Library consists of a single file coos.h.
 ## Usage
 
 Place coos.h file into the same folder where the sketch is. In the sketch include coos.h as:
-
+```C
 #include "coos.h"
-
+```
 Alternatively, it can be used as an Arduino library. Once installed, there is no need to copy coos.h file into every project any more. To install it as library, locate your Arduino installation folder and find libraries folder. Typically it is: 
-
+```
 C:\Program Files (x86)\Arduino\libraries
-
+```
 Add folder coos: 
-
+```
 C:\Program Files (x86)\Arduino\libraries\coos
-
+```
 Copy files coos.h and library.properties there.
 
 In the sketch include coos library as:
-
+```C
 #include <coos.h>
-
+```
 In rev 1.3 number of tasks declared as follows:
-
+```C
 Coos <6> coos; // number 6 in the angle brackets specifies number of user tasks
-
+```
 
