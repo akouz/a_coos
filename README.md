@@ -23,13 +23,11 @@ Add folder coos:
 ```
 C:\Program Files (x86)\Arduino\libraries\coos
 ```
-Copy files __coos.h__ and __library.properties__ there.
-
-In the sketch include coos library as:
+Copy files __coos.h__ and __library.properties__ there. In your sketch include coos library as:
 ```C
 #include <coos.h>
 ```
-In rev 1.3 number of tasks declared as follows:
+In rev 1.3 number of coos tasks declared as follows:
 ```C
 Coos <6> coos; // number 6 in the angle brackets specifies number of user tasks
 ```
