@@ -27,7 +27,7 @@ Copy files __coos.h__ and __library.properties__ there. In your sketch include c
 ```C
 #include <coos.h>
 ```
-In rev 1.3 number of coos tasks declared as follows:
+Required number of coos tasks declared in your sketch as follows:
 ```C
 Coos <6> coos; // number 6 in the angle brackets specifies number of user tasks
 ```
