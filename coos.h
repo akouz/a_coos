@@ -1,7 +1,7 @@
 /*
  * Library   COOS - COoperative Operating System
  * Author    A.Kouznetsov
- * Rev       1.3 dated 14/03/2019
+ * Rev       1.4 dated 17/03/2019
  * Target    Arduino
 
 Redistribution and use in source and binary forms, with or without modification, 
@@ -53,7 +53,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // Template class                                              
 //##############################################################################
 
-template <unsigned char COOS_MAX_TASKS> class Coos{
+template <unsigned char COOS_MAX_TASKS, char TIMING> class Coos{
   public:
                 Coos(void);                           // constructor
     void        register_task(void (*tsk)(void));     // user tasks must be registered first
@@ -79,7 +79,7 @@ template <unsigned char COOS_MAX_TASKS> class Coos{
 // =================================
 // Constructor
 // =================================
-template <unsigned char COOS_MAX_TASKS> Coos<COOS_MAX_TASKS>::Coos(void)
+template <unsigned char COOS_MAX_TASKS, char TIMING> Coos<COOS_MAX_TASKS, TIMING>::Coos(void)
 {
   uint i;
   uptime = 0;
@@ -95,7 +95,7 @@ template <unsigned char COOS_MAX_TASKS> Coos<COOS_MAX_TASKS>::Coos(void)
 // =================================
 // Register a task 
 // =================================
-template <unsigned char COOS_MAX_TASKS> void Coos<COOS_MAX_TASKS>::register_task(void (*tsk)(void))
+template <unsigned char COOS_MAX_TASKS, char TIMING> void Coos<COOS_MAX_TASKS, TIMING>::register_task(void (*tsk)(void))
 {
   if (task_cnt < COOS_MAX_TASKS)
   {
@@ -106,31 +106,56 @@ template <unsigned char COOS_MAX_TASKS> void Coos<COOS_MAX_TASKS>::register_task
 // Update time
 // =================================
 // supposed to happen more often than every millisecond,
-// but can be late if a task takes long time to execute
-template <unsigned char COOS_MAX_TASKS> void Coos<COOS_MAX_TASKS>::update_time(void)
+// task should not keep control for more than about 900 us
+template <unsigned char COOS_MAX_TASKS, char TIMING> void Coos<COOS_MAX_TASKS, TIMING>::update_time(void)
 {
   uint millisec = (uint)millis(); 
-  while (ms != millisec) // catch up time
-  {      
-    ms++;  
-    for (int i=0; i<task_cnt; i++)
+  if (TIMING) // ticks 1.024 ms
+  {    
+    if (ms != millisec) // 1024 us passed, decrement task delays once 
     {
-      if (task_delay[i] > 0)  // positive delays 
+      for (int i=0; i<task_cnt; i++)
       {
-        task_delay[i]--;
+        if (task_delay[i] > 0)  // decrement positive delays 
+        {
+          task_delay[i]--;
+        }
       }
     }
-    if (++msec >= 1000) // if 1 sec passed
-    {
-      uptime++;         // count seconds since start
-      msec = 0;
-    }
-  }  
+    while (ms != millisec) // about every 42 ms millis() is corrected, eg changed by 2
+    {      
+      ms++;  
+      if (++msec >= 1000) // if 1 sec passed
+      {
+        uptime++;         // count seconds since start
+        msec = 0;
+      }
+    }  
+  } 
+  else // ticks 1 ms in average
+  {
+    while (ms != millisec)  // catch up time
+    {      
+      ms++;  
+      for (int i=0; i<task_cnt; i++)
+      {
+        if (task_delay[i] > 0)  // decrement positive delays 
+        {
+          task_delay[i]--;
+        }
+      }
+      if (++msec >= 1000) // if 1 sec passed
+      {
+        uptime++;         // count seconds since start
+        msec = 0;
+      }
+    }  
+  }
 }
 // =================================
 // Start scheduler - init registered tasks
 // =================================
-template <unsigned char COOS_MAX_TASKS> void Coos<COOS_MAX_TASKS>::start(void)
+template <unsigned char COOS_MAX_TASKS, char TIMING> void Coos<COOS_MAX_TASKS, TIMING>::start(void)
 {
   int   res;
   void (*tsk)(void);
@@ -157,7 +182,7 @@ template <unsigned char COOS_MAX_TASKS> void Coos<COOS_MAX_TASKS>::start(void)
 // =================================
 // Run scheduler on regular basis
 // =================================
-template <unsigned char COOS_MAX_TASKS> void Coos<COOS_MAX_TASKS>::run(void)
+template <unsigned char COOS_MAX_TASKS, char TIMING> void Coos<COOS_MAX_TASKS, TIMING>::run(void)
 {
   int res;
   int tmp;

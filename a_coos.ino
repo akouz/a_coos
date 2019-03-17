@@ -1,7 +1,7 @@
 /*
  * Sketch    a_coos.ino - simple demo for cooperative OS named COOS
  * Author    A.Kouznetsov
- * Rev       1.3 dated 14/03/2019
+ * Rev       1.4 dated 17/03/2019
 
 Redistribution and use in source and binary forms, with or without modification, 
 are permitted.
@@ -24,6 +24,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // Def
 //##############################################################################
 
+enum{
+    TICK_1000US   = 0,    // 1 ms in average because of corrections made in millis(),  
+                          // see https://www.best-microcontroller-projects.com/arduino-millis.html
+    TICK_1024US   = 1     // 1.024 ms
+};
+#define TICK   TICK_1000US  // select tick
+
 #ifndef BUILTIN_LED
   #define BUILTIN_LED 13
 #endif  
@@ -34,7 +41,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 static int led = BUILTIN_LED;
 
-Coos <4> coos;       // create operating system with up to 4 tasks  
+Coos <4, TICK> coos;    // create coos with up to 4 tasks, tick as selected;
+                        // do not create coos with less than 3 tasks             
 
 //##############################################################################
 // Func
@@ -53,11 +61,12 @@ void coos_task0(void)
     COOS_DELAY(500);          // 500 ms
     digitalWrite(led, HIGH); 
     COOS_DELAY(500);          // 500 ms
-    if (++cnt >= 60)          // every minute
+    if (++cnt >= 60)          // every minute if TICK_1000US selected
+                              // or approx every 61 sec if TICK_1024US selected   
     {
       cnt = 0;
-      Serial.print(" uptime = ");
-      Serial.print(coos.uptime);
+      Serial.print(" uptime = ");   // coos.uptime counts seconds correctly
+      Serial.print(coos.uptime);    // disregard of tick selected
       Serial.println(" sec ");
     }
   }
@@ -82,9 +91,18 @@ void setup()
   Serial.begin(115200);
   Serial.println();
   Serial.println("== COOS demo ==");
+  Serial.print("tick ");
+  if (TICK == TICK_1000US)
+  {
+    Serial.println("1 ms average");
+  } 
+  else
+  {
+    Serial.println("1.024 ms");
+  } 
   pinMode(led, OUTPUT);
-  coos.register_task(coos_task0);    
-  coos.register_task(coos_task1);
+  coos.register_task(coos_task0);   // register task 0   
+  coos.register_task(coos_task1);   // register task 1
   coos.start();                     // init registered tasks
 }
 
