@@ -31,7 +31,7 @@ Copy files __coos.h__, __library.properties__, __keywords.txt__ and folder __exa
 ```C
 #include <coos.h>
 ```
-Required number of coos tasks declared in your sketch as follows:
+Required number of coos tasks and coos tick should be declared in your sketch as follows:
 ```C
 Coos <6, 0> coos; // number 6 in the angle brackets specifies number of user tasks; 0 selects 1 ms tick
 ```
