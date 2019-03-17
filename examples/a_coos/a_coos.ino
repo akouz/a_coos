@@ -18,7 +18,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <coos.h>
+#include <coos.h> // use installed library
 
 //##############################################################################
 // Def
