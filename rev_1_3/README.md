@@ -2,7 +2,7 @@
 
 This revision always uses ticks of 1 ms in average
 
-## USAGE
+## Usage
 
 Place __coos.h__ file into the same folder where the sketch is. In the sketch include __coos.h__ as:
 ```C
