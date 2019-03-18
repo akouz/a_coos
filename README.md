@@ -39,6 +39,8 @@ Coos <6, 0> coos; // number 6 in the angle brackets specifies number of user tas
 ```C
 Coos <6, 0> coos; 
 ```
+Instance name __coos__ must be used, othervise macro __COOS_DELAY__ cannot operate correctly.
+
 60,000 ticks  in 60 sec:
 ```
 == COOS demo ==
