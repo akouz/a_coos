@@ -8,7 +8,7 @@ Kernel uses about 1K bytes. Highly portable, it has no assembler code and it is 
 Coos made as C++ template. Library consists of a single file coos.h. 
 
 ## Warnings: 
-  * COOS_DELAY(x) must be used in the task itself; it cannot be used in functions called from task.
+  * __COOS_DELAY(x)__ must be used in the task itself; it cannot be used in functions called from task.
   * Variables used by a task should be declared as static, otherwise their value will be lost after COOS_DELAY() call.
   * Tick can be selected either 1 ms in average, or 1.024 ms. Uptime calculated correctly disregard of tick selected.
   * Do not declare less than 3 tasks. Actual number of tasks should be less or equal to the declared.
@@ -35,7 +35,7 @@ Required number of coos tasks and coos tick should be declared in your sketch as
 ```C
 Coos <6, 0> coos; // number 6 in the angle brackets specifies number of user tasks; 0 selects 1 ms tick
 ```
-Instance name __coos__ must be used, othervise macro __COOS_DELAY__ cannot operate correctly.
+Instance name __coos__ must be used, othervise macro __COOS_DELAY(x)__ cannot operate correctly.
 
 
 ### When 1 ms tick selected
