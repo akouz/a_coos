@@ -21,11 +21,11 @@ Place __coos.h__ file into the same folder where the sketch is. In the sketch in
 ```
 Alternatively, it can be used as an Arduino library. Once installed, there is no need to copy __coos.h__ file into every project any more. To install it as library, locate your Arduino libraries folder. Typically it is: 
 ```
-My Documents\Arduino\libraries\
+C:\Users\user\Documents\Arduino\libraries\
 ```
 Add folder coos: 
 ```
-My Documents\Arduino\libraries\coos
+C:\Users\user\Documents\Arduino\libraries\coos\
 ```
 Copy files __coos.h__, __library.properties__, __keywords.txt__ and folder __examples__ there. In your sketch include coos library as:
 ```C
