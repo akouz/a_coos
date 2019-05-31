@@ -3,3 +3,6 @@ Coos	KEYWORD1
 register_task	KEYWORD2
 start	KEYWORD2
 run	KEYWORD2
+register_clock KEYWORD2
+hour KEYWORD2
+minute KEYWORD2
