@@ -6,15 +6,19 @@
 Redistribution and use in source and binary forms, with or without modification, 
 are permitted.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE 
-FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT 
-OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE 
-OR OTHER DEALINGS IN THE SOFTWARE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR 
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <coos.h> // use installed library
+#include "coos.h"
 
 //##############################################################################
 // Def
@@ -25,7 +29,7 @@ enum{
                           // see https://www.best-microcontroller-projects.com/arduino-millis.html
     TICK_1024US   = 1     // 1.024 ms
 };
-#define TICK   TICK_1000US  // select tick
+#define TICK   TICK_1024US  // select tick
 
 #ifndef BUILTIN_LED
   #define BUILTIN_LED 13
@@ -80,6 +84,15 @@ void coos_task1(void)
   }
 }
 // ========================================
+// Clock prints current time every minute
+// ========================================
+void clock_func(void)
+{
+    char buf[10];
+    sprintf(buf," %02d:%02d ", coos.hour(), coos.minute());
+    Serial.print(buf);
+}
+// ========================================
 // Setup
 // ========================================
 void setup()
@@ -97,6 +110,7 @@ void setup()
     Serial.println("1.024 ms");
   } 
   pinMode(led, OUTPUT);
+  coos.register_clock(clock_func);  // register clock function
   coos.register_task(coos_task0);   // register task 0   
   coos.register_task(coos_task1);   // register task 1
   coos.start();                     // init registered tasks
