@@ -61,7 +61,7 @@ template <unsigned char COOS_MAX_TASKS, char TIMING> class Coos{
   public:
                     Coos(void);                         // constructor
     void            register_task(void (*tsk)(void));   // user's tasks must be registered first
-    void            register_clock(void (*clk)(void));  // users's clock function will be invoked when min changed    
+    void            register_clock(void (*clk)(void));  // users's clock function will be invoked every minute
     void            start(void);                        // init scheduler once
     void            run(void);                          // COOS task switcher
     uchar           hour(void);                         // current hour since midnight 
@@ -72,7 +72,7 @@ template <unsigned char COOS_MAX_TASKS, char TIMING> class Coos{
     int             task_delay[COOS_MAX_TASKS];         // task delay in msec, task stopped if value is negative
     unsigned int    msec;                               // ms of current sec
     unsigned long   daysec;                             // seconds since midnight
-    unsigned long   uptime;                             // sec since start
+    unsigned long   uptime;                             // seconds since start
     
   private:
     void            (*tsk_p[COOS_MAX_TASKS])(void);     // list of registered tasks
