@@ -4,7 +4,8 @@
 Very simple COoperative Operating System for Arduino based on the standard __setjmp__ library.
 
 Kernel uses about 1K bytes. Highly portable, it has no assembler code and it is independent from hardware. System ticks 1 ms based on __millis()__. Should run on any Arduino board. Tested with the following boards:
-  * Arduino Pro Mini (ATmega328) 
+  * Arfuino Uno, Arduino Pro Mini and Seeeduino (ATmega328P) 
+  * Arduino Leonardo (ATmega32U4)
   * Arduino MKR1000 (SAMD21)
   * XMC1100 Boot Kit and XMC 2Go (XMC1100) 
   * RAK Creator Pro (RTL8711) 
