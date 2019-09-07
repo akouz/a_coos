@@ -9,7 +9,7 @@ Kernel uses about 1K bytes. Highly portable, it has no assembler code and it is 
   * Arduino MKR1000 (SAMD21)
   * XMC1100 Boot Kit and XMC 2Go (XMC1100) 
   * RAK Creator Pro (RTL8711) 
-  * NodeMCU (ESP8266) 
+  * NodeMCU and Wemos Lolin (ESP8266) 
   * Coos does not work with ESP32 because of [problems in the ESP32 __setjmp__ library.](https://github.com/espressif/arduino-esp32/issues/1689)
 
 Coos made as C++ template. Library consists of a single file coos.h. 
