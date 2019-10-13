@@ -1,7 +1,7 @@
 /*
  * Library   COOS - COoperative Operating System
  * Author    A.Kouznetsov
- * Rev       1.5 dated 31/05/2019
+ * Rev       1.6 dated 13/10/2019
  * Target    Arduino
 
 Redistribution and use in source and binary forms, with or without modification, 
@@ -255,7 +255,7 @@ template <unsigned char COOS_MAX_TASKS, char TIMING> void Coos<COOS_MAX_TASKS, T
       task_delay[task_no] = tmp;          // set task delay (negative delay - task stopped) 
     }
   }
-  if (++task_no > task_cnt)               // next task
+  if (++task_no >= task_cnt)               // next task
   {
     task_no = 0;                          // round-robin
   }
