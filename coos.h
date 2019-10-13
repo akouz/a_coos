@@ -50,7 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define COOS_DELAY(__delay)  if (!setjmp(coos.task_context[coos.task_no])) {longjmp(coos.main_context, __delay+1);} else{}
 
 #define COOS_REV_MAJ         1
-#define COOS_REV_MIN         5
+#define COOS_REV_MIN         6
 
 
 //##############################################################################
