@@ -1,5 +1,6 @@
 # a_coos
-#### rev 1.6
+#### rev 1.6 
+(note: rev 1.6 - bug fix in line 258)
 
 Very simple COoperative Operating System for Arduino based on the standard __setjmp__ library.
 
