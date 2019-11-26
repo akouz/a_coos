@@ -17,7 +17,7 @@ Coos made as C++ template. Library consists of a single file coos.h.
 ## Warnings: 
   * __COOS_DELAY(x)__ must be used in the task itself; it cannot be used in functions called from task.
   * Variables used by a task should be declared as static, otherwise their value will be lost after __COOS_DELAY(x)__ call.
-  * Tick can be selected either 1 ms in average, or 1.024 ms. Uptime, daysec, hour and minute calculated correctly disregard of tick selected.
+  * For ATmega microcontrollers, tick can be selected either 1 ms in average, or 1.024 ms. Uptime, daysec, hour and minute calculated correctly disregard of tick selected. Other microcontrollers always have tick of 1 ms.
   * Actual number of tasks should be less or equal to the declared.
 
 ## Usage
