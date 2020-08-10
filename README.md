@@ -42,7 +42,7 @@ Required number of coos tasks and coos tick should be declared in your sketch as
 ```C
 Coos <6, 0> coos; // number 6 in the angle brackets specifies number of user tasks; 0 selects 1 ms tick
 ```
-Instance name __coos__ must be used, othervise macro __COOS_DELAY(x)__ cannot operate correctly.
+Instance name __coos__ must be used, otherwise macro __COOS_DELAY(x)__ cannot operate correctly.
 
 
 ### When 1 ms tick selected
