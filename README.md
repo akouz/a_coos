@@ -10,6 +10,7 @@ Kernel uses about 1K bytes. Highly portable, it has no assembler code and it is 
   * XMC1100 Boot Kit and XMC 2Go (XMC1100) 
   * RAK Creator Pro (RTL8711) 
   * NodeMCU and Wemos Lolin (ESP8266) 
+  * [HBnode](https://github.com/akouz/HBnode) (AVR64DD32)
   * Coos does not work with ESP32 because of [problems in the ESP32 __setjmp__ library.](https://github.com/espressif/arduino-esp32/issues/1689)
 
 Coos made as C++ template. Library consists of a single file coos.h. 
